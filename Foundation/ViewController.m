@@ -52,6 +52,11 @@
     
     NSLog(@"counter %lu", (unsigned long)arr.count);
     NSLog(@"Printing Array: %@", arr);
+    
+    for (id obj in arr)
+    {
+        NSLog(@"testing in: %@", obj);
+    }
 }
 
 

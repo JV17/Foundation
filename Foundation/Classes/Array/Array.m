@@ -40,14 +40,7 @@
 
 - (instancetype)init
 {
-    self = [super init];
-    
-    if (self)
-    {
-        // custom init
-    }
-    
-    return self;
+    return [self initWithObjects:nil];
 }
 
 
@@ -57,10 +50,24 @@
     
     if (self)
     {
-        // custom init
+        [self loadArrayWithArray:array];
     }
     
     return self;
+}
+
+
+- (void)loadArrayWithArray:(NSArray *)array
+{
+    if (!array.count)
+    {
+        return;
+    }
+    
+    for (id object in array)
+    {
+        [self addObjectFront:object];
+    }
 }
 
 
@@ -498,6 +505,19 @@
 }
 
 
+#pragma mark - Allows the use of "in"
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])stackbuf count:(NSUInteger)len
+{
+    if (self.isEmpty)
+    {
+        return 0;
+    }
+    
+    return [self.asNSArrayValue countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
+
 #pragma mark - Custom Accessors
 
 /**
@@ -572,6 +592,33 @@
     }
     
     return NO;
+}
+
+
+- (NSArray *)asNSArrayValue
+{
+    if (self.isEmpty)
+    {
+        return nil;
+    }
+    
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    if (self.head && !self.tail)
+    {
+        [array addObject:self.head.data];
+        return [array copy];
+    }
+    
+    ArrayData *current = self.tail;
+    
+    while (current)
+    {
+        [array addObject:current.data];
+        current = current.next;
+    }
+    
+    return [array copy];
 }
 
 @end

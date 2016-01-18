@@ -23,6 +23,11 @@
  */
 @property (nonatomic, assign, readonly) BOOL isEmpty;
 
+/**
+ Holds the array value as NSArray.
+ */
+@property (nonatomic, assign, readonly) NSArray *asNSArrayValue;
+
 
 #pragma mark - Lifecycle
 
@@ -152,5 +157,20 @@
     The index of the object.
   */
 - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+
+
+#pragma mark - Allows the use of "in"
+
+/**
+ Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
+ 
+ @param state
+    Context information that is used in the enumeration to, in addition to other possibilities, ensure that the collection has not been mutated.
+ @param stackbuf
+    A C array of objects over which the sender is to iterate.
+ @param len
+    The maximum number of objects to return in @a stackbuf.
+ */
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])stackbuf count:(NSUInteger)len;
 
 @end
